@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Tithi Kotasthane — Drosophila Genetics &amp; Systemic Physiology
+    </title>
+    <meta
+      name="description"
+      content="Tithi Kotasthane — iPhD student at IISER Thiruvananthapuram studying hypoxia signalling, metabolism and nutritional homeostasis in Drosophila melanogaster."
+    />
+    <meta name="theme-color" content="#181213" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="profile" />
+    <meta
+      property="og:title"
+      content="Tithi Kotasthane — Drosophila Genetics &amp; Systemic Physiology"
+    />
+    <meta
+      property="og:description"
+      content="Investigating systemic oxygen and nutrient sensing across Drosophila development."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      /* ============================================================
+   TOKENS
+   ============================================================ */
+      :root {
+        --bg: #181213;
+        --bg-sunk: #120d0e;
+        --ivory: #f6f1ee;
+        --ivory-sunk: #efe9e4;
+
+        --on-dark: #eddfe1;
+        --on-dark-dim: #c4afb2; /* raised contrast vs. original */
+        --on-ivory: #121214;
+        --on-ivory-dim: #4e4b50;
+
+        --accent: #f4a6bf; /* single pink, used everywhere */
+        --accent-deep: #9c475d; /* the same pink, legible on ivory */
+
+        --rule-dark: rgba(255, 255, 255, 0.11);
+        --rule-light: rgba(18, 18, 20, 0.12);
+
+        --wrap: 72rem;
+        --nav-h: 4rem;
+        --wave-h: clamp(56px, 7.5vw, 108px);
+
+        --f-display: "Bodoni Moda", "Didot", Georgia, serif;
+        --f-body: "Newsreader", Georgia, "Times New Roman", serif;
+        --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      }
+
+      /* ============================================================
+   BASE
+   ============================================================ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--on-dark);
+        font-family: var(--f-body);
+        font-weight: 300;
+        font-size: clamp(1rem, 0.96rem + 0.2vw, 1.075rem);
+        line-height: 1.62;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: 400;
+      }
+      p {
+        margin: 0;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 2px;
+      }
+
+      .wrap {
+        max-width: var(--wrap);
+        margin-inline: auto;
+        padding-inline: 1.5rem;
+      }
+      @media (min-width: 768px) {
+        .wrap {
+          padding-inline: 3rem;
+        }
+      }
+
+      .mono {
+        font-family: var(--f-mono);
+      }
+      .serif-display {
+        font-family: var(--f-display);
+      }
+      em {
+        font-style: italic;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* ============================================================
+   BANDS  (alternating dark / ivory)
+   ============================================================ */
+      .band {
+        position: relative;
+        padding-block: clamp(3.25rem, 7vw, 6rem);
+        scroll-margin-top: var(--nav-h);
+      }
+      .band--dark {
+        background: var(--bg);
+        color: var(--on-dark);
+      }
+      .band--ivory {
+        background: var(--ivory);
+        color: var(--on-ivory);
+      }
+
+      .band--dark .dim {
+        color: var(--on-dark-dim);
+      }
+      .band--ivory .dim {
+        color: var(--on-ivory-dim);
+      }
+
+      /* ============================================================
+   WAVE DIVIDER
+   ------------------------------------------------------------
+   Fixes vs. the original:
+   • fills stretch (fine), strokes use vector-effect:non-scaling-
+     stroke so they keep an even weight at any viewport width
+   • flies live in a SEPARATE, aspect-correct overlay instead of
+     inside the preserveAspectRatio="none" SVG, so they no longer
+     smear horizontally
+   • flies are positioned with CSS %, not with <use x/y> combined
+     with a scale() transform (which multiplied their coordinates
+     and threw them off-position in the original)
+   • one shared geometry in <defs>, two mirrored variants, so all
+     six dividers read as one rhythm
+   ============================================================ */
+      .wave {
+        position: relative;
+        height: var(--wave-h);
+        line-height: 0;
+        background: var(--from);
+        overflow: hidden;
+      }
+      .wave > svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: calc(100% + 1px); /* bleeds the seam */
+        display: block;
+      }
+      .wave .w-fill {
+        fill: var(--to);
+      }
+      .wave .w-ghost {
+        fill: var(--accent);
+        opacity: 0.14;
+      }
+      .wave .w-line {
+        fill: none;
+        stroke: var(--accent);
+        stroke-width: 1.5;
+        opacity: 0.75;
+      }
+      .wave .w-line--soft {
+        stroke-width: 1;
+        opacity: 0.4;
+      }
+
+      .wave--d2i {
+        --from: var(--bg);
+        --to: var(--ivory);
+        --fly: var(--accent);
+      }
+      .wave--i2d {
+        --from: var(--ivory);
+        --to: var(--bg);
+        --fly: var(--accent-deep);
+      }
+
+      .wave-flies {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .wave-fly {
+        position: absolute;
+        width: clamp(15px, 1.9vw, 24px);
+        height: auto;
+        color: var(--fly);
+        opacity: 0.6;
+        transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      }
+
+      /* ============================================================
+   HEADER / NAV
+   ============================================================ */
+      .site-header {
+        position: fixed;
+        inset-inline: 0;
+        top: 0;
+        z-index: 50;
+        background: rgba(24, 18, 19, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--rule-dark);
+        transition: box-shadow 0.3s ease, background 0.3s ease;
+      }
+      .site-header.is-scrolled {
+        background: rgba(24, 18, 19, 0.94);
+        box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.9);
+      }
+      .nav-bar {
+        max-width: var(--wrap);
+        margin-inline: auto;
+        height: var(--nav-h);
+        padding-inline: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      @media (min-width: 768px) {
+        .nav-bar {
+          padding-inline: 3rem;
+        }
+      }
+
+      .brand {
+        font-family: var(--f-display);
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        transition: color 0.2s;
+      }
+      .brand:hover {
+        color: var(--accent);
+      }
+      .brand::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+
+      .nav-links {
+        display: none;
+        align-items: center;
+        gap: 1.9rem;
+      }
+      @media (min-width: 880px) {
+        .nav-links {
+          display: flex;
+        }
+      }
+      .nav-links a {
+        font-family: var(--f-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--on-dark-dim);
+        padding-block: 0.4rem;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+      .nav-links a.is-active {
+        color: var(--accent);
+        border-color: rgba(244, 166, 191, 0.55);
+      }
+      .nav-links a.nav-cta {
+        color: var(--accent);
+      }
+
+      .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        margin-right: -0.5rem;
+        background: none;
+        border: 0;
+        color: var(--on-dark);
+        cursor: pointer;
+      }
+      @media (min-width: 880px) {
+        .nav-toggle {
+          display: none;
+        }
+      }
+      .nav-toggle svg {
+        width: 22px;
+        height: 22px;
+      }
+      .nav-toggle .icon-close {
+        display: none;
+      }
+      .nav-toggle[aria-expanded="true"] .icon-open {
+        display: none;
+      }
+      .nav-toggle[aria-expanded="true"] .icon-close {
+        display: block;
+      }
+
+      .nav-panel {
+        display: none;
+        background: rgba(19, 14, 15, 0.98);
+        border-bottom: 1px solid var(--rule-dark);
+        padding: 1rem 1.5rem 1.4rem;
+      }
+      .nav-panel.is-open {
+        display: block;
+      }
+      @media (min-width: 880px) {
+        .nav-panel {
+          display: none !important;
+        }
+      }
+      .nav-panel a {
+        display: block;
+        padding: 0.6rem 0;
+        font-family: var(--f-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--on-dark-dim);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .nav-panel a:last-child {
+        border-bottom: 0;
+        color: var(--accent);
+      }
+
+      main {
+        padding-top: var(--nav-h);
+      }
+
+      /* ============================================================
+   SECTION TAGS / SHARED TYPE
+   ============================================================ */
+      .sec-tag {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: clamp(2rem, 4vw, 3.25rem);
+        font-family: var(--f-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+      .sec-tag::after {
+        content: "";
+        height: 1px;
+        width: 2.75rem;
+        background: currentColor;
+        opacity: 0.25;
+      }
+      .band--dark .sec-tag {
+        color: var(--accent);
+      }
+      .band--ivory .sec-tag {
+        color: var(--accent-deep);
+      }
+
+      .h2 {
+        font-family: var(--f-display);
+        font-size: clamp(1.8rem, 1.15rem + 2.5vw, 2.85rem);
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+      }
+      .lede {
+        font-family: var(--f-body);
+        font-size: clamp(1.02rem, 0.98rem + 0.3vw, 1.2rem);
+      }
+      .kicker {
+        font-family: var(--f-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      /* ============================================================
+   HERO
+   ============================================================ */
+      .hero {
+        position: relative;
+        padding-top: clamp(3.5rem, 9vw, 7rem);
+        padding-bottom: clamp(3.5rem, 8vw, 6rem);
+        overflow: hidden;
+      }
+      .hero-glow {
+        position: absolute;
+        top: 34%;
+        left: 50%;
+        width: min(620px, 120vw);
+        aspect-ratio: 1;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(
+          circle,
+          rgba(244, 166, 191, 0.17) 0%,
+          rgba(244, 166, 191, 0.05) 45%,
+          transparent 70%
+        );
+        filter: blur(60px);
+        pointer-events: none;
+      }
+      .hero-strands {
+        position: absolute;
+        inset: 0;
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      .hero-strands svg {
+        width: 100%;
+        height: 100%;
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-family: var(--f-display);
+        font-size: clamp(2.8rem, 1.4rem + 6.4vw, 5.4rem);
+        line-height: 0.96;
+        letter-spacing: -0.03em;
+        color: #fff;
+        margin-bottom: 1.25rem;
+      }
+      .hero-quote {
+        margin: 0 0 1.1rem;
+        font-family: var(--f-body);
+        font-style: italic;
+        font-weight: 300;
+        font-size: clamp(1.5rem, 1rem + 2.3vw, 2.7rem);
+        line-height: 1.2;
+        color: var(--accent);
+      }
+      .hero-sub {
+        max-width: 34rem;
+        color: var(--on-dark-dim);
+        font-size: clamp(1rem, 0.96rem + 0.3vw, 1.13rem);
+      }
+      .hero-meta {
+        margin-top: clamp(2.25rem, 5vw, 3.25rem);
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule-dark);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem 1.35rem;
+        font-family: var(--f-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.1em;
+        color: var(--on-dark-dim);
+      }
+      .hero-meta li {
+        display: flex;
+        align-items: center;
+        gap: 1.35rem;
+      }
+      .hero-meta li:not(:last-child)::after {
+        content: "·";
+        opacity: 0.35;
+      }
+
+      .scroll-cue {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-top: clamp(2.5rem, 6vw, 4rem);
+        font-family: var(--f-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--on-dark-dim);
+        transition: color 0.2s;
+      }
+      .scroll-cue:hover {
+        color: var(--accent);
+      }
+      .scroll-cue svg {
+        width: 13px;
+        height: 13px;
+        animation: nudge 2.4s ease-in-out infinite;
+      }
+      @keyframes nudge {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(4px);
+        }
+      }
+
+      /* ============================================================
+   ABOUT
+   ============================================================ */
+      .about-grid {
+        display: grid;
+        gap: clamp(2.25rem, 4vw, 4rem);
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+      @media (min-width: 900px) {
+        .about-grid {
+          grid-template-columns: 7fr 5fr;
+        }
+      }
+      .about-copy > * + * {
+        margin-top: 1.15rem;
+      }
+      .about-copy .h2 {
+        max-width: 20ch;
+      }
+      .about-thesis {
+        font-family: var(--f-body);
+        font-style: italic;
+        font-weight: 300;
+        font-size: clamp(1.05rem, 1rem + 0.5vw, 1.28rem);
+        color: var(--accent-deep);
+      }
+      .about-copy strong {
+        font-weight: 500;
+      }
+
+      .about-side {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule-light);
+      }
+      @media (min-width: 900px) {
+        .about-side {
+          padding-top: 0;
+          padding-left: 2rem;
+          border-top: 0;
+          border-left: 1px solid var(--rule-light);
+        }
+      }
+      .stats {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(
+          2,
+          minmax(0, 1fr)
+        ); /* was 3 cols with an empty cell */
+        margin-top: 1.1rem;
+      }
+      .stat-value {
+        font-family: var(--f-display);
+        font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem);
+        line-height: 1;
+      }
+      .stat-label {
+        display: block;
+        margin-top: 0.35rem;
+        font-family: var(--f-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--on-ivory-dim);
+      }
+
+      /* --- figures with graceful fallback ------------------------- */
+      .figure {
+        margin: 0;
+      }
+      .figure__frame {
+        position: relative;
+        border: 1px solid var(--rule-light);
+        border-radius: 3px;
+        overflow: hidden;
+        background: var(--ivory-sunk);
+      }
+      .band--dark .figure__frame {
+        border-color: var(--rule-dark);
+        background: var(--bg-sunk);
+      }
+      .figure__frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .figure--plate .figure__frame {
+        aspect-ratio: 16/9;
+      }
+      .figure--plate img {
+        filter: grayscale(1) contrast(1.15);
+      }
+
+      .figure__fallback {
+        display: none;
+        position: absolute;
+        inset: 0;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        text-align: center;
+        font-family: var(--f-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--on-ivory-dim);
+        background: repeating-linear-gradient(
+            45deg,
+            rgba(156, 71, 93, 0.07) 0 8px,
+            transparent 8px 16px
+          ),
+          var(--ivory-sunk);
+      }
+      .band--dark .figure__fallback {
+        color: var(--on-dark-dim);
+        background: repeating-linear-gradient(
+            45deg,
+            rgba(244, 166, 191, 0.06) 0 8px,
+            transparent 8px 16px
+          ),
+          var(--bg-sunk);
+      }
+      .figure.is-missing img {
+        display: none;
+      }
+      .figure.is-missing .figure__fallback {
+        display: flex;
+      }
+      .figure.is-missing .figure__frame {
+        min-height: 180px;
+      }
+
+      /* ============================================================
+   RESEARCH
+   ============================================================ */
+      .research-head {
+        max-width: 46rem;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+      .research-head .h2 {
+        margin-bottom: 0.75rem;
+      }
+      .rule-squiggle {
+        margin-top: 1.25rem;
+        width: 11rem;
+        height: 0.75rem;
+        color: var(--accent);
+        opacity: 0.6;
+      }
+
+      .fig-card {
+        border: 1px solid var(--rule-dark);
+        border-radius: 4px;
+        background: var(--bg-sunk);
+        overflow: hidden;
+        margin: 0 0 clamp(2.5rem, 5vw, 3.75rem);
+      }
+      .fig-card__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.7rem 1.15rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        font-family: var(--f-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--on-dark-dim);
+      }
+      .fig-card__bar strong {
+        color: var(--accent);
+        font-weight: 400;
+      }
+      .fig-card__body {
+        padding: clamp(1rem, 3vw, 2rem);
+        background: #0d0a0b;
+      }
+      .fig-card__body img {
+        margin-inline: auto;
+        max-height: 520px;
+        width: auto;
+        object-fit: contain;
+      }
+      .fig-card figcaption {
+        padding: 0.75rem 1.15rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        font-family: var(--f-mono);
+        font-size: 0.7rem;
+        line-height: 1.5;
+        color: var(--on-dark-dim);
+      }
+      .fig-card figcaption em {
+        color: #fff;
+      }
+
+      .arch {
+        padding-top: 1.75rem;
+        border-top: 1px solid var(--rule-dark);
+      }
+      .arch__label {
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+      }
+      .arch__cols {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 720px) {
+        .arch__cols {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 2.5rem;
+        }
+      }
+      .arch h3 {
+        font-family: var(--f-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        color: #fff;
+        padding-bottom: 0.6rem;
+        margin-bottom: 0.9rem;
+        border-bottom: 1px solid var(--rule-dark);
+      }
+      .tick-list li {
+        position: relative;
+        padding-left: 1rem;
+        margin-bottom: 0.55rem;
+        font-family: var(--f-mono);
+        font-size: 0.74rem;
+        line-height: 1.55;
+        color: var(--on-dark-dim);
+      }
+      .tick-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* ============================================================
+   JOURNEY
+   ============================================================ */
+      .journey-head {
+        max-width: 40rem;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+      .journey-head .h2 {
+        margin-bottom: 0.5rem;
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 48rem;
+        margin-left: 0.5rem;
+        padding-left: clamp(1.5rem, 4vw, 2.25rem);
+        border-left: 1px solid var(--rule-light);
+        display: grid;
+        gap: 2rem;
+      }
+      .tl-item {
+        position: relative;
+      }
+      .tl-item::before {
+        content: "";
+        position: absolute;
+        top: 0.45rem;
+        left: calc(-1 * clamp(1.5rem, 4vw, 2.25rem) - 5px);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--ivory);
+        border: 2px solid var(--accent-deep);
+        transition: transform 0.2s ease;
+      }
+      .tl-item:hover::before {
+        transform: scale(1.3);
+      }
+      .tl-when {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-family: var(--f-mono);
+        font-size: 0.67rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent-deep);
+        line-height: 1.5;
+      }
+      .tl-what {
+        font-size: 1.02rem;
+      }
+
+      .tl-item--active {
+        padding: 1.1rem 1.25rem;
+        margin-left: -1.25rem;
+        border: 1px solid rgba(244, 166, 191, 0.45);
+        border-radius: 4px;
+        background: rgba(244, 166, 191, 0.1);
+      }
+      .tl-item--active::before {
+        top: 1.5rem;
+        left: calc(-1 * clamp(1.5rem, 4vw, 2.25rem) - 6px);
+        width: 12px;
+        height: 12px;
+        background: var(--accent-deep);
+        border-color: var(--accent);
+      }
+      .tl-badge {
+        display: inline-block;
+        margin-right: 0.5rem;
+        margin-bottom: 0.4rem;
+        padding: 0.18rem 0.6rem;
+        border-radius: 999px;
+        background: var(--accent-deep);
+        color: var(--ivory);
+        font-family: var(--f-mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      .tl-item--active .tl-what {
+        font-weight: 500;
+      }
+
+      /* ============================================================
+   REPERTOIRE
+   ============================================================ */
+      .lab-head {
+        max-width: 40rem;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+      .lab-head .h2 {
+        margin-bottom: 0.5rem;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 1.1rem;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 680px) {
+        .card-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (min-width: 1000px) {
+        .card-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+      .card {
+        padding: 1.5rem;
+        border: 1px solid var(--rule-dark);
+        border-radius: 4px;
+        background: rgba(18, 13, 14, 0.6);
+        transition: border-color 0.25s ease, transform 0.25s ease;
+      }
+      .card:hover {
+        border-color: rgba(244, 166, 191, 0.3);
+        transform: translateY(-2px);
+      }
+      .card--wide {
+        grid-column: 1/-1;
+      }
+      @media (min-width: 1000px) {
+        .card--wide {
+          grid-column: span 2;
+        }
+      }
+      .card__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 0.6rem;
+        margin-bottom: 0.9rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        font-family: var(--f-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        color: #fff;
+      }
+      .card__head::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+      .card p {
+        font-family: var(--f-mono);
+        font-size: 0.74rem;
+        line-height: 1.75;
+        color: var(--on-dark-dim);
+      }
+
+      /* ============================================================
+   OPPORTUNITIES
+   ============================================================ */
+      .opp {
+        max-width: 40rem;
+        display: grid;
+        gap: 1.4rem;
+        justify-items: start;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.6rem;
+        border-radius: 999px;
+        background: var(--on-ivory);
+        color: var(--ivory);
+        font-family: var(--f-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        transition: background 0.25s ease;
+      }
+      .btn:hover {
+        background: var(--accent-deep);
+      }
+      .btn svg {
+        width: 13px;
+        height: 13px;
+        transition: transform 0.25s ease;
+      }
+      .btn:hover svg {
+        transform: translateX(3px);
+      }
+
+      /* ============================================================
+   CONTACT / FOOTER
+   ============================================================ */
+      .contact-head {
+        max-width: 40rem;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+      .contact-head .h2 {
+        font-size: clamp(2.1rem, 1.3rem + 3.2vw, 3.2rem);
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+      .contact-links {
+        display: grid;
+        gap: 0.85rem;
+        justify-items: start;
+      }
+      .contact-links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-family: var(--f-mono);
+        transition: color 0.2s;
+      }
+      .contact-links a svg {
+        width: 16px;
+        height: 16px;
+        flex: none;
+      }
+      .contact-email {
+        font-size: clamp(0.95rem, 0.9rem + 0.5vw, 1.2rem);
+        color: var(--accent);
+      }
+      .contact-email:hover {
+        text-decoration: underline;
+      }
+      .contact-phone {
+        font-size: clamp(0.88rem, 0.85rem + 0.4vw, 1.05rem);
+        color: var(--on-dark-dim);
+      }
+      .contact-phone:hover {
+        color: var(--accent);
+      }
+
+      .footer-rule {
+        width: 100%;
+        height: 1rem;
+        margin: clamp(2rem, 4vw, 3rem) 0 0;
+        color: var(--accent);
+      }
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2rem;
+        padding-block: 1.75rem;
+        border-block: 1px solid var(--rule-dark);
+        font-family: var(--f-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+      }
+      .footer-links a {
+        color: var(--on-dark);
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--accent);
+      }
+      .footer-end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-top: 2.25rem;
+        font-family: var(--f-mono);
+        font-size: 0.66rem;
+        color: var(--on-dark-dim);
+      }
+      .footer-motto {
+        font-family: var(--f-display);
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      /* ============================================================
+   REVEAL (progressive enhancement only)
+   ============================================================ */
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      .js .reveal.is-in {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .js .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ============================================================
+   PRINT
+   ============================================================ */
+      @media print {
+        .site-header,
+        .wave,
+        .hero-glow,
+        .hero-strands,
+        .scroll-cue {
+          display: none !important;
+        }
+        body {
+          background: #fff;
+          color: #000;
+        }
+        .band {
+          background: #fff !important;
+          color: #000 !important;
+          padding-block: 1.25rem;
+        }
+        main {
+          padding-top: 0;
+        }
+        .card,
+        .fig-card {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= SHARED SVG GEOMETRY ================= -->
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <defs>
+        <!-- Wave A: trough left, crest right -->
+        <path
+          id="wA-ghost"
+          d="M0,44 C240,-4 480,-4 720,36 C960,76 1200,76 1440,36 L1440,121 L0,121 Z"
+        />
+        <path
+          id="wA-fill"
+          d="M0,64 C240,16 480,16 720,56 C960,96 1200,96 1440,56 L1440,121 L0,121 Z"
+        />
+        <path
+          id="wA-line"
+          vector-effect="non-scaling-stroke"
+          d="M0,64 C240,16 480,16 720,56 C960,96 1200,96 1440,56"
+        />
+        <path
+          id="wA-soft"
+          vector-effect="non-scaling-stroke"
+          d="M0,44 C240,-4 480,-4 720,36 C960,76 1200,76 1440,36"
+        />
+
+        <!-- Wave B: mirrored -->
+        <path
+          id="wB-ghost"
+          d="M0,36 C240,76 480,76 720,36 C960,-4 1200,-4 1440,44 L1440,121 L0,121 Z"
+        />
+        <path
+          id="wB-fill"
+          d="M0,56 C240,96 480,96 720,56 C960,16 1200,16 1440,64 L1440,121 L0,121 Z"
+        />
+        <path
+          id="wB-line"
+          vector-effect="non-scaling-stroke"
+          d="M0,56 C240,96 480,96 720,56 C960,16 1200,16 1440,64"
+        />
+        <path
+          id="wB-soft"
+          vector-effect="non-scaling-stroke"
+          d="M0,36 C240,76 480,76 720,36 C960,-4 1200,-4 1440,44"
+        />
+
+        <!-- Drosophila silhouette, drawn in a 40 × 36 box -->
+        <g id="fly">
+          <ellipse cx="20" cy="8" rx="2.2" ry="2" fill="currentColor" />
+          <ellipse cx="20" cy="14" rx="3.8" ry="3.5" fill="currentColor" />
+          <path
+            d="M17 18 Q20 16.5 23 18 Q23.6 24 22.8 28 Q20 31.5 17.2 28 Q16.4 24 17 18 Z"
+            fill="currentColor"
+          />
+          <path
+            d="M17 12 C11 7, 3 12, 5 21 C7 25, 14 24, 17 15 Z"
+            fill="currentColor"
+            fill-opacity=".32"
+            stroke="currentColor"
+            stroke-width=".3"
+          />
+          <path
+            d="M23 12 C29 7, 37 12, 35 21 C33 25, 26 24, 23 15 Z"
+            fill="currentColor"
+            fill-opacity=".32"
+            stroke="currentColor"
+            stroke-width=".3"
+          />
+          <path
+            d="M19 6 Q16 4 14 3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width=".5"
+            stroke-linecap="round"
+          />
+          <path
+            d="M21 6 Q24 4 26 3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width=".5"
+            stroke-linecap="round"
+          />
+        </g>
+      </defs>
+    </svg>
+
+    <!-- ================= HEADER ================= -->
+    <header class="site-header" id="site-header">
+      <div class="nav-bar">
+        <a class="brand" href="#hero">Tithi Kotasthane</a>
+
+        <nav class="nav-links" id="primary-nav" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#research">Research</a>
+          <a href="#journey">Journey</a>
+          <a href="#lab">Lab</a>
+          <a href="#opportunities">Opportunities</a>
+          <a href="#contact" class="nav-cta">Contact</a>
+        </nav>
+
+        <button
+          class="nav-toggle"
+          id="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-panel"
+          aria-label="Open menu"
+        >
+          <svg
+            class="icon-open"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg
+            class="icon-close"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-panel" id="nav-panel">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#journey">Journey</a>
+        <a href="#lab">Lab</a>
+        <a href="#opportunities">Opportunities</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= 01 · HERO ================= -->
+      <section class="band band--dark hero" id="hero">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-strands" aria-hidden="true">
+          <svg
+            viewBox="0 0 1440 800"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M-100,280 C320,160 600,440 1020,310 C1250,240 1420,380 1560,340"
+              stroke="#F4A6BF"
+              stroke-width="1.2"
+              stroke-dasharray="6 4"
+              stroke-opacity=".45"
+              vector-effect="non-scaling-stroke"
+            />
+            <path
+              d="M-100,320 C340,210 630,480 1050,350 C1280,270 1400,420 1560,370"
+              stroke="#F4A6BF"
+              stroke-width="1.5"
+              stroke-opacity=".6"
+              vector-effect="non-scaling-stroke"
+            />
+            <path
+              d="M-80,480 C380,390 710,590 1120,490 C1310,430 1460,540 1580,510"
+              stroke="#F4A6BF"
+              stroke-width="1"
+              stroke-opacity=".35"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+        </div>
+
+        <div class="wrap hero-inner">
+          <h1>Tithi Kotasthane</h1>
+          <blockquote class="hero-quote">
+            “Understanding life in motion.”
+          </blockquote>
+          <p class="hero-sub dim">
+            Investigating systemic oxygen and nutrient sensing across
+            <em>Drosophila</em> development.
+          </p>
+
+          <!-- was an empty strip of stray "·" characters -->
+          <ul class="hero-meta">
+            <li>iPhD · IISER Thiruvananthapuram</li>
+            <li>DREAM Lab · Dr. Jishy Varghese</li>
+            <li><em>Drosophila melanogaster</em></li>
+          </ul>
+
+          <a class="scroll-cue" href="#about">
+            <span>Scroll</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- wave: dark → ivory -->
+      <div class="wave wave--d2i" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wA-ghost" class="w-ghost" />
+          <use href="#wA-soft" class="w-line w-line--soft" />
+          <use href="#wA-fill" class="w-fill" />
+          <use href="#wA-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 26%; top: 30%; --r: -12deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 60%; top: 22%; --r: 14deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 84%; top: 34%; --r: -7deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 02 · ABOUT ================= -->
+      <section class="band band--ivory" id="about">
+        <div class="wrap">
+          <p class="sec-tag">02 / About</p>
+
+          <div class="about-grid">
+            <div class="about-copy reveal">
+              <h2 class="h2">
+                I study how organisms respond when conditions change.
+              </h2>
+              <p class="about-thesis">
+                How do environmental cues translate into systemic growth and
+                developmental timing?
+              </p>
+              <p class="dim">
+                Third-year iPhD student at IISER Thiruvananthapuram exploring
+                how organisms
+                <strong
+                  >sense, integrate, and adapt to changes in their
+                  environment</strong
+                >, with a focus on
+                <strong
+                  >metabolism, development, stress, and physiological
+                  homeostasis</strong
+                >
+                using <em>Drosophila melanogaster</em>.
+              </p>
+            </div>
+
+            <div class="about-side reveal">
+              <p class="kicker" style="color: var(--accent-deep)">
+                Academic highlights
+              </p>
+              <div class="stats">
+                <div>
+                  <div class="stat-value">9.56</div>
+                  <span class="stat-label">IISER TVM · CGPA/10</span>
+                </div>
+                <div>
+                  <div class="stat-value">9.08</div>
+                  <span class="stat-label">MSc Baroda · CGPA/10</span>
+                </div>
+              </div>
+
+              <figure
+                class="figure figure--plate"
+                style="
+                  margin-top: 1.75rem;
+                  padding-top: 1.5rem;
+                  border-top: 1px solid var(--rule-light);
+                "
+              >
+                <div class="figure__frame">
+                  <img
+                    data-fallback
+                    alt="Adult Drosophila melanogaster, scanning electron micrograph"
+                    loading="lazy"
+                    decoding="async"
+                    src="https://lh3.googleusercontent.com/aida/AEtjO1XLmHrFGO9q9JRken-Imtp73DUW7T-qAjWuTK-LGfIs0m_F4CHvDYORj0VIEdpiBLBrxGDcqafGe-Xuqe0fdfY9ARXxBatAgSIz9RwbpxLWX_BT5ivXc_FI4aS8g2krqWpifXFDs-lpimJuITRu29OomW4dnvaPojiACKgF2j83ulUOixEL2k6arajaCIl8UZiJkDjUthmbBWqJA6T-v1WsffDDLcIRXr802MnsGIOItN8zUShPqEnLLZo"
+                  />
+                  <div class="figure__fallback">
+                    Fig. A · Adult <em>D. melanogaster</em> — image unavailable
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- wave: ivory → dark -->
+      <div class="wave wave--i2d" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wB-ghost" class="w-ghost" />
+          <use href="#wB-soft" class="w-line w-line--soft" />
+          <use href="#wB-fill" class="w-fill" />
+          <use href="#wB-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 20%; top: 26%; --r: 14deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 52%; top: 34%; --r: -14deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 80%; top: 22%; --r: 8deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 03 · RESEARCH ================= -->
+      <section class="band band--dark" id="research">
+        <div class="wrap">
+          <p class="sec-tag">03 / Current research</p>
+
+          <div class="research-head reveal">
+            <h2 class="h2" style="color: #fff">
+              Hypoxia signalling in growth, development &amp; nutritional
+              homeostasis
+            </h2>
+            <p class="lede dim">
+              Elucidating hypoxia–nutrient crosstalk across larval development
+              and adult physiology.
+            </p>
+            <svg
+              class="rule-squiggle"
+              viewBox="0 0 200 12"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M0,6 Q25,0 50,6 T100,6 T150,6 T200,6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                vector-effect="non-scaling-stroke"
+              />
+            </svg>
+          </div>
+
+          <figure class="fig-card reveal">
+            <div class="fig-card__bar">
+              <strong>Figure 1</strong>
+              <span>Pathway schematic</span>
+            </div>
+            <div class="fig-card__body">
+              <div class="figure" style="position: relative">
+                <img
+                  data-fallback
+                  alt="Schematic of hypoxia–nutrient crosstalk and Sima stabilization in Drosophila melanogaster"
+                  loading="lazy"
+                  decoding="async"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPE2j1-iH8cxvj51QcYQrJQzO9NRnRkQQ79vV2el6Z74tM8NTrtdK8XSJM6O4kb36dQ7TBX5CD8YRLVeczJ7RTBIMhjS3hwmYWHHRZG_qEtSSjrJE-8I0R9ZmB4CmjL2cU6-QMZUu5kfijsctOvYWM9bx42jQkftMv0zWIdhNtf5-KgZNVMX2FIOP0eBqfYfekpCilFcd0Zcxa8aSDunr1o1g2Dn72QttP5x3NZn72Adz4gRkOtPCSJH2F8ifHYhX2EA"
+                />
+                <div
+                  class="figure__fallback"
+                  style="position: static; min-height: 160px"
+                >
+                  Figure 1 · Pathway schematic — image unavailable
+                </div>
+              </div>
+            </div>
+            <figcaption>
+              Figure 1 · Hypoxia–nutrient crosstalk and Sima stabilization in
+              <em>Drosophila melanogaster</em>.
+            </figcaption>
+          </figure>
+
+          <div class="arch reveal">
+            <p class="kicker arch__label">Experimental architecture</p>
+            <div class="arch__cols">
+              <div>
+                <h3>01 / Tissue targeting</h3>
+                <ul class="tick-list">
+                  <li>Fat body-specific <em>sima</em> manipulation</li>
+                  <li>
+                    GAL4/UAS &amp; <em>tub-GAL80<sup>ts</sup></em> conditional
+                    drivers
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3>02 / Adult assays</h3>
+                <ul class="tick-list">
+                  <li>Feeding assay (Orange G dye)</li>
+                  <li>Triglyceride (TAG) quantification</li>
+                  <li>Starvation survival kinetics</li>
+                  <li>Body weight &amp; critical weight</li>
+                  <li>Locomotor activity (DAM system)</li>
+                </ul>
+              </div>
+              <div>
+                <h3>03 / Larval pathway qPCRs</h3>
+                <ul class="tick-list">
+                  <li>
+                    Insulin pathway (<em>dilps</em>, <em>InR</em>,
+                    <em>4E-BP</em>)
+                  </li>
+                  <li>
+                    Ecdysone pathway (<em>phantom</em>, <em>spookier</em>)
+                  </li>
+                  <li>
+                    Hypoxia pathway (<em>sima</em>, <em>tgo</em>, <em>ldh</em>)
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- wave: dark → ivory -->
+      <div class="wave wave--d2i" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wB-ghost" class="w-ghost" />
+          <use href="#wB-soft" class="w-line w-line--soft" />
+          <use href="#wB-fill" class="w-fill" />
+          <use href="#wB-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 18%; top: 30%; --r: -16deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 47%; top: 20%; --r: 15deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 76%; top: 33%; --r: -9deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 04 · JOURNEY ================= -->
+      <section class="band band--ivory" id="journey">
+        <div class="wrap">
+          <p class="sec-tag">04 / Journey</p>
+
+          <div class="journey-head reveal">
+            <h2 class="h2">Research journey</h2>
+            <p class="dim">
+              Intellectual evolution toward organismal physiology, stress &amp;
+              metabolism.
+            </p>
+          </div>
+
+          <ol class="timeline">
+            <li class="tl-item reveal">
+              <span class="tl-when">2022 — 2023 · MS University of Baroda</span>
+              <p class="tl-what">
+                Molecular biology, toxicology &amp; antimicrobial
+                susceptibility.
+              </p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-when"
+                >May — July 2024 · IISER Pune · Dr. Girish Ratnaparkhi</span
+              >
+              <p class="tl-what">
+                <em>Drosophila</em> embryonic patterning &amp; dorsoventral
+                development.
+              </p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-when"
+                >June — August 2025 · IISER Thiruvananthapuram · Dr. Sabari
+                Shankar Tirupati</span
+              >
+              <p class="tl-what">
+                GreA transcription regulation in <em>Bacillus subtilis</em>.
+              </p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-when"
+                >August — September 2025 · IISER Thiruvananthapuram · Dr. Nisha
+                N. Kanan</span
+              >
+              <p class="tl-what">
+                <em>Drosophila</em> chronobiology &amp; circadian nutrition.
+              </p>
+            </li>
+            <li class="tl-item tl-item--active reveal">
+              <span class="tl-badge">Active thesis</span>
+              <span class="tl-when"
+                >2025 — present · DREAM Lab, IISER Thiruvananthapuram · Dr.
+                Jishy Varghese</span
+              >
+              <p class="tl-what">
+                Master’s thesis: Hypoxia signalling, metabolism &amp;
+                nutritional homeostasis in <em>Drosophila</em>.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- wave: ivory → dark -->
+      <div class="wave wave--i2d" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wA-ghost" class="w-ghost" />
+          <use href="#wA-soft" class="w-line w-line--soft" />
+          <use href="#wA-fill" class="w-fill" />
+          <use href="#wA-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 23%; top: 24%; --r: -14deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 55%; top: 32%; --r: 12deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 83%; top: 25%; --r: -6deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 05 · IN THE LAB ================= -->
+      <section class="band band--dark" id="lab">
+        <div class="wrap">
+          <p class="sec-tag">05 / In the lab</p>
+
+          <div class="lab-head reveal">
+            <h2 class="h2" style="color: #fff">In the lab</h2>
+            <p class="dim">
+              Experimental repertoire across physiological, genetic, and
+              molecular domains.
+            </p>
+          </div>
+
+          <div class="card-grid">
+            <article class="card card--wide reveal">
+              <h3 class="card__head">Organismal physiology</h3>
+              <p>
+                <em>Drosophila</em> maintenance · Genetic crosses · Larval
+                staging · Tissue dissection (ovary, brain) · CAFE feeding assay
+                (Orange G) · TAG lipid quantification · Starvation survival ·
+                Activity monitoring · Hypoxia exposure · Body weight
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3 class="card__head">Functional genetics</h3>
+              <p>
+                RNAi · GeneSwitch · GAL4/UAS targeting · Tissue-specific
+                overexpression &amp; knockdown · Temperature-sensitive GAL80<sup
+                  >ts</sup
+                >
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3 class="card__head">Molecular biology</h3>
+              <p>
+                RNA/DNA extraction · cDNA synthesis · PCR &amp; gel
+                electrophoresis · RT-qPCR · Bacterial culture · Chromatography
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3 class="card__head">Microscopy &amp; imaging</h3>
+              <p>
+                Confocal laser scanning · Epifluorescence · Specimen preparation
+                · ImageJ / FIJI
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3 class="card__head">Cellular &amp; quantitative</h3>
+              <p>
+                Flow cytometry preparation &amp; analysis · Survival analysis ·
+                Physiological data modelling · Python
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- wave: dark → ivory -->
+      <div class="wave wave--d2i" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wB-ghost" class="w-ghost" />
+          <use href="#wB-soft" class="w-line w-line--soft" />
+          <use href="#wB-fill" class="w-fill" />
+          <use href="#wB-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 19%; top: 31%; --r: -16deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 49%; top: 22%; --r: 14deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 78%; top: 32%; --r: -8deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 06 · OPPORTUNITIES ================= -->
+      <section class="band band--ivory" id="opportunities">
+        <div class="wrap">
+          <p class="sec-tag">06 / Prospective</p>
+
+          <div class="opp reveal">
+            <h2 class="h2">Research opportunities</h2>
+            <p class="lede dim">
+              Interested in doctoral research exploring environmental sensing,
+              inter-organ communication, and metabolic homeostasis using
+              <em>Drosophila melanogaster</em>, cell and molecular biology, and
+              organismal physiology.
+            </p>
+            <a class="btn" href="#contact">
+              <span>Get in touch</span>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- wave: ivory → dark -->
+      <div class="wave wave--i2d" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <use href="#wA-ghost" class="w-ghost" />
+          <use href="#wA-soft" class="w-line w-line--soft" />
+          <use href="#wA-fill" class="w-fill" />
+          <use href="#wA-line" class="w-line" />
+        </svg>
+        <div class="wave-flies">
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 24%; top: 26%; --r: -12deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 57%; top: 20%; --r: 16deg"
+          >
+            <use href="#fly" />
+          </svg>
+          <svg
+            class="wave-fly"
+            viewBox="0 0 40 36"
+            style="left: 85%; top: 30%; --r: -8deg"
+          >
+            <use href="#fly" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= 07 · CONTACT ================= -->
+      <section class="band band--dark" id="contact">
+        <div class="wrap">
+          <p class="sec-tag">07 / Contact</p>
+
+          <div class="contact-head reveal">
+            <h2 class="h2">Let’s talk science.</h2>
+
+            <div class="contact-links">
+              <a class="contact-email" href="mailto:tithik24@iisertvm.ac.in">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <span>tithik24@iisertvm.ac.in</span>
+              </a>
+              <a class="contact-phone" href="tel:+918511787003">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  />
+                </svg>
+                <span>+91 85117 87003</span>
+              </a>
+            </div>
+          </div>
+
+          <svg
+            class="footer-rule"
+            viewBox="0 0 1200 16"
+            preserveAspectRatio="none"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,8 Q150,0 300,8 T600,8 T900,8 T1200,8"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-dasharray="10 6"
+              stroke-opacity=".35"
+              vector-effect="non-scaling-stroke"
+            />
+            <path
+              d="M0,11 Q150,17 300,11 T600,11 T900,11 T1200,11"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-opacity=".65"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+
+          <div class="footer-links">
+            <!-- TODO: point this at the actual CV file, e.g. href="cv.pdf" -->
+            <a href="#" rel="noopener">CV ↗</a>
+          </div>
+
+          <div class="footer-end">
+            <span class="footer-motto">Understanding life in motion.</span>
+            <span>© <span id="year">2026</span> Tithi Kotasthane</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+        document.documentElement.classList.add("js");
+
+        /* ---------- mobile menu ---------- */
+        var toggle = document.getElementById("nav-toggle");
+        var panel = document.getElementById("nav-panel");
+
+        function setMenu(open) {
+          panel.classList.toggle("is-open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+          toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        }
+        toggle.addEventListener("click", function () {
+          setMenu(toggle.getAttribute("aria-expanded") !== "true");
+        });
+        panel.addEventListener("click", function (e) {
+          if (e.target.closest("a")) setMenu(false);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            toggle.getAttribute("aria-expanded") === "true"
+          ) {
+            setMenu(false);
+            toggle.focus();
+          }
+        });
+
+        /* ---------- header shadow on scroll ---------- */
+        var header = document.getElementById("site-header");
+        var ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            header.classList.toggle("is-scrolled", window.scrollY > 24);
+            ticking = false;
+          });
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        /* ---------- scroll spy ---------- */
+        var links = Array.prototype.slice.call(
+          document.querySelectorAll('#primary-nav a[href^="#"]')
+        );
+        var sections = links
+          .map(function (a) {
+            return document.querySelector(a.getAttribute("href"));
+          })
+          .filter(Boolean);
+
+        if ("IntersectionObserver" in window && sections.length) {
+          var spy = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                links.forEach(function (a) {
+                  a.classList.toggle(
+                    "is-active",
+                    a.getAttribute("href") === "#" + entry.target.id
+                  );
+                });
+              });
+            },
+            { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+          );
+          sections.forEach(function (s) {
+            spy.observe(s);
+          });
+        }
+
+        /* ---------- reveal on scroll ---------- */
+        var reduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        var revealables = document.querySelectorAll(".reveal");
+
+        if (reduced || !("IntersectionObserver" in window)) {
+          revealables.forEach(function (el) {
+            el.classList.add("is-in");
+          });
+        } else {
+          var io = new IntersectionObserver(
+            function (entries, obs) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("is-in");
+                obs.unobserve(entry.target);
+              });
+            },
+            { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
+          );
+          revealables.forEach(function (el) {
+            io.observe(el);
+          });
+        }
+
+        /* ---------- image fallbacks (hotlinked sources can expire) ---------- */
+        document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+          function fail() {
+            var fig = img.closest(".figure");
+            if (fig) fig.classList.add("is-missing");
+          }
+          img.addEventListener("error", fail);
+          if (img.complete && img.naturalWidth === 0) fail();
+        });
+
+        /* ---------- footer year ---------- */
+        document.getElementById("year").textContent = new Date().getFullYear();
+      })();
+    </script>
+  </body>
+</html>
